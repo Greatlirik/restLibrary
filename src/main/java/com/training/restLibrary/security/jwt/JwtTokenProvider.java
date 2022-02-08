@@ -1,16 +1,19 @@
 package com.training.restLibrary.security.jwt;
 
-import com.training.restLibrary.models.Role;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.training.restLibrary.exception.JwtAuthenticationException;
+import com.training.restLibrary.model.Role;
+import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,8 +27,11 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
@@ -41,26 +47,44 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256,secret)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
     public Authentication getAuthentication(String token) {
-        return null;
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUserName(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     public String getUserName(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
+            return bearerToken.substring(7, bearerToken.length());
+        }
         return null;
     }
 
     public boolean validateToken(String token) {
-        return true;
+        try{
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+
+            if(claims.getBody().getExpiration().before(new Date())){
+                return false;
+            }
+            return true;
+        } catch (JwtException | IllegalArgumentException e){
+            throw new JwtAuthenticationException("Jwt token is expired or invalid");
+        }
     }
 
     private List<String> getRoleNames(List<Role> userRoles) {
         List<String> result = new ArrayList<>();
         userRoles.forEach(role ->
-                result.add(role.toString()));
+                result.add(role.getName()));
         return result;
     }
 }

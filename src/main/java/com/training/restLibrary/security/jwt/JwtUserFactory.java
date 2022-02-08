@@ -1,7 +1,7 @@
 package com.training.restLibrary.security.jwt;
 
-import com.training.restLibrary.models.AccountEntity;
-import com.training.restLibrary.models.Role;
+import com.training.restLibrary.model.Account;
+import com.training.restLibrary.model.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -14,7 +14,7 @@ public final class JwtUserFactory {
     public JwtUserFactory() {
     }
 
-    public static JwtUser create(AccountEntity account) {
+    public static JwtUser create(Account account) {
         return new JwtUser(
                 account.getId(),
                 account.getName(),
