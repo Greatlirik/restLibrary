@@ -1,11 +1,14 @@
 package com.training.restLibrary.service;
 
+import com.training.restLibrary.model.Book;
+import com.training.restLibrary.model.Reader;
 import com.training.restLibrary.model.Record;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface RecordService {
-    List<Record> findAll();
+    Page<Record> findAll(Optional<Integer> page);
 
     Record save(Record record);
 
@@ -15,7 +18,13 @@ public interface RecordService {
 
     Record update(Record record, Long id);
 
-    List<Record> findAllByReader(Long readerId);
+    Page<Record> findAllByReader(Long readerId, Optional<Integer> page);
 
-    List<Record> findAllByBook(Long bookId);
+    Page<Record> findAllByBook(Long bookId, Optional<Integer> page);
+
+    Record takeBook(Book book, Reader reader);
+
+    Record returnBook(Book book, Reader reader);
+
+    Record findByBookAndReader(Reader reader, Book book);
 }

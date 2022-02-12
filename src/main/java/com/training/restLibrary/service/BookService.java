@@ -2,13 +2,13 @@ package com.training.restLibrary.service;
 
 import com.training.restLibrary.model.Author;
 import com.training.restLibrary.model.Book;
-import com.training.restLibrary.model.Reader;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
-    List<Book> findAll();
+    Page<Book> findAll(Optional<Integer> page);
 
     Book save(Book book);
 
@@ -18,11 +18,15 @@ public interface BookService {
 
     Book update(Book book, Long id);
 
-    List<Book> findAllByTitleContainingIgnoreCase(String title);
+    Page<Book> findAllByTitleContainingIgnoreCase(String title, Optional<Integer> page);
 
-    List<Book> findAllByAuthors(Author author);
+    Page<Book> findAllByAuthors(Author author, Optional<Integer> page);
 
-    List<Book> findAllByGenreIgnoreCase(String genre);
+    Page<Book> findAllByGenreIgnoreCase(String genre, Optional<Integer> page);
 
-    List<Book> findAllByAvailability(boolean availability);
+    Page<Book> findAllByAvailability(boolean availability, Optional<Integer> page);
+
+    Book takeBook(Long id);
+
+    Book returnBook(Long id);
 }

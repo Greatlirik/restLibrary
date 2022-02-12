@@ -3,16 +3,16 @@ package com.training.restLibrary.repository;
 
 import com.training.restLibrary.model.Author;
 import com.training.restLibrary.model.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.List;
-
 public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
-    List<Book> findAllByTitleContainingIgnoreCase(String title);
+    Page<Book> findAllByTitleContainingIgnoreCase(String title, Pageable page);
 
-    List<Book> findAllByAuthors(Author author);
+    Page<Book> findAllByAuthors(Author author, Pageable page);
 
-    List<Book> findAllByGenreIgnoreCase(String genre);
+    Page<Book> findAllByGenreIgnoreCase(String genre, Pageable page);
 
-    List<Book> findAllByAvailability(boolean availability);
+    Page<Book> findAllByAvailability(boolean availability, Pageable page);
 }

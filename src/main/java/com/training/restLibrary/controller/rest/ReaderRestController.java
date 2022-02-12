@@ -1,6 +1,7 @@
 package com.training.restLibrary.controller.rest;
 
 import com.training.restLibrary.model.Reader;
+import com.training.restLibrary.service.ActionManagerService;
 import com.training.restLibrary.service.ReaderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 public class ReaderRestController {
 
     private final ReaderService readerService;
+    private final ActionManagerService managerService;
 
     @GetMapping
     public List<Reader> findAllReaders() {
@@ -25,6 +27,12 @@ public class ReaderRestController {
     @GetMapping("{id}")
     public Reader getReader(final @PathVariable("id") Long readerId) {
         return readerService.findById(readerId);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("{id}")
+    public void returnBook(final @PathVariable("id") Long readerId, final @RequestParam(value = "bookId") Long bookId) {
+        managerService.returnBook(bookId, readerId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

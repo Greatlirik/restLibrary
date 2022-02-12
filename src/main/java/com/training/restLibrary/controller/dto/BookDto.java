@@ -13,6 +13,9 @@ import java.util.Set;
 @Accessors(chain = true)
 public class BookDto {
 
+    @NotNull
+    private Long id;
+
     @NotEmpty(message = "The title is required")
     private String title;
 
@@ -33,26 +36,4 @@ public class BookDto {
 
     @NotEmpty(message = "The authors is required")
     private Set<Author> authors;
-
-    public Book toBook() {
-        return new Book()
-                .setTitle(title)
-                .setGenre(genre)
-                .setYear(year)
-                .setDescription(description)
-                .setQuantity(quantity)
-                .setAvailability(available)
-                .setAuthors(authors);
-    }
-
-    public BookDto fromBook(Book book){
-        return new BookDto()
-                .setTitle(book.getTitle())
-                .setGenre(book.getGenre())
-                .setYear(book.getYear())
-                .setDescription(book.getDescription())
-                .setQuantity(book.getQuantity())
-                .setAvailable(book.getAvailability())
-                .setAuthors(book.getAuthors());
-    }
 }

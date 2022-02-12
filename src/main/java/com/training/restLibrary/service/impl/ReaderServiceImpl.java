@@ -1,6 +1,7 @@
 package com.training.restLibrary.service.impl;
 
 import com.training.restLibrary.exception.ResourceNotFoundException;
+import com.training.restLibrary.model.Book;
 import com.training.restLibrary.model.Reader;
 import com.training.restLibrary.repository.ReaderRepository;
 import com.training.restLibrary.service.ReaderService;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RequiredArgsConstructor
@@ -40,7 +42,8 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public Reader findById(final Long id) {
-        final Reader reader = readerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("not found reader with id" + id));
+        final Reader reader = readerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("not found reader with id" + id));
         log.info("In findById - reader: {} found by id: {}", reader, id);
         return reader;
     }
@@ -51,6 +54,32 @@ public class ReaderServiceImpl implements ReaderService {
         reader.setId(id);
         readerRepository.save(reader);
         log.info("In update - reader with id: {} successfully updated", id);
+        return reader;
+    }
+
+    @Override
+    public Book takeBook(final Long readerId, final Book book) {
+        final Reader reader = readerRepository.findById(readerId)
+                .orElseThrow(() -> new ResourceNotFoundException("not found reader with id" + readerId));
+        Set<Book> books = reader.getBooks();
+        if (books.contains(book)) {
+            throw new ResourceNotFoundException("test");
+        }
+        books.add(book);
+        reader.setBooks(books);
+        return book;
+    }
+
+    @Override
+    public Reader returnBook(final Long readerId, final Book book) {
+        final Reader reader = readerRepository.findById(readerId)
+                .orElseThrow(() -> new ResourceNotFoundException("not found reader with id" + readerId));
+        Set<Book> books = reader.getBooks();
+        if (!books.contains(book)) {
+            throw new ResourceNotFoundException("test");
+        }
+        books.remove(book);
+        reader.setBooks(books);
         return reader;
     }
 }

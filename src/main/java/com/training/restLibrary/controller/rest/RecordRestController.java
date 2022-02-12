@@ -3,11 +3,13 @@ package com.training.restLibrary.controller.rest;
 import com.training.restLibrary.model.Record;
 import com.training.restLibrary.service.RecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,16 +19,17 @@ public class RecordRestController {
     private final RecordService recordService;
 
     @GetMapping
-    public List<Record> findAllRecords(
+    public Page<Record> findAllRecords(
             @RequestParam(value = "bookId", required = false) Long bookId,
-            @RequestParam(value = "readerId", required = false) Long readerId) {
-        List<Record> records;
+            @RequestParam(value = "readerId", required = false) Long readerId,
+            @RequestParam Optional<Integer> page) {
+        Page<Record> records;
         if (bookId != null) {
-            records = recordService.findAllByBook(bookId);
+            records = recordService.findAllByBook(bookId, page);
         } else if (readerId != null) {
-            records = recordService.findAllByReader(readerId);
+            records = recordService.findAllByReader(readerId, page);
         } else {
-            records = recordService.findAll();
+            records = recordService.findAll(page);
         }
         return records;
     }

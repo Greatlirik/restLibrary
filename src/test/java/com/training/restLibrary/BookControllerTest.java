@@ -19,11 +19,11 @@ public class BookControllerTest {
     @InjectMocks
     private BookRestController bookRestController;
 
-    @Test
-    void getAllBooks() {
-        bookRestController.findAllBooks();
-        Mockito.verify(bookRepository).findAll();
-    }
+//    @Test
+//    void getAllBooks() {
+//        bookRestController.findAllBooks();
+//        Mockito.verify(bookRepository).findAll();
+//    }
 
     @Test
     void getBook() {

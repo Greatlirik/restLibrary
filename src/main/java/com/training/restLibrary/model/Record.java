@@ -1,6 +1,7 @@
 package com.training.restLibrary.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "record")
 @Data
+@Accessors(chain = true)
 public class Record extends BaseEntity{
 
     @ManyToOne

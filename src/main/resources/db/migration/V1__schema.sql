@@ -42,7 +42,7 @@ CREATE TABLE record (
     reader_id INTEGER NOT NULL,
     receipt_date DATE NOT NULL,
     return_date DATE NOT NULL,
-    real_return_date DATE NOT NULL,
+    real_return_date DATE,
     CONSTRAINT fk_record_book_id FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_record_reader_id FOREIGN KEY (reader_id) REFERENCES reader (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT pk_record_id PRIMARY KEY (id)
