@@ -1,4 +1,4 @@
-package com.training.restLibrary.security;
+package com.training.restLibrary.service.impl;
 
 import com.training.restLibrary.model.Account;
 import com.training.restLibrary.security.jwt.JwtUser;
@@ -12,6 +12,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * JwtUserDetailsService
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
 @RequiredArgsConstructor
 @Primary
 @Service
@@ -24,7 +30,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String name) throws UsernameNotFoundException {
         Account account = userService.findByName(name);
 
-        if(account ==null){
+        if (account == null) {
             throw new UsernameNotFoundException("User with username:" + name + "not found");
         }
 

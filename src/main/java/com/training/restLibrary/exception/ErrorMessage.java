@@ -5,12 +5,28 @@ import lombok.Getter;
 
 import java.util.Date;
 
+/**
+ * Error message
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
 @Getter
 @AllArgsConstructor
 public class ErrorMessage {
-    private int StatusCode;
-    private Date timestamp;
-    private String message;
-    private String description;
 
+    /**
+     * Field timestamp
+     */
+    private Date timestamp;
+
+    /**
+     * Field message
+     */
+    private String message;
+
+    /**
+     * Field description
+     */
+    private String description;
 }

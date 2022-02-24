@@ -6,11 +6,11 @@ spring:
     show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/library?user=library&password=library
-  mustache:
-    expose-request-attributes: true
-    suffix: .html
 
 logging:
+  file.name: logs/log.log
+  pattern:
+    file: "%d %-5level [%thread] %logger : %msg%n"
   level:
     com:
       github:
@@ -20,6 +20,7 @@ logging:
       springframework: INFO
       hibernate: ERROR
 
+management.endpoints.web.exposure.include: health,info,env,beans,mappings,loggers
 
 jwt.token.secret: jwttest
 jwt.token.expired: 3600000

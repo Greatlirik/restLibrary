@@ -6,6 +6,18 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
 
-public interface AccountRepository extends PagingAndSortingRepository<Account,Long> {
+/**
+ * Account Repository
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
+public interface AccountRepository extends PagingAndSortingRepository<Account, Long> {
+    /**
+     * Find account with given username
+     *
+     * @param username
+     * @return Optional<Account>
+     */
     Optional<Account> findByName(String username);
 }

@@ -1,5 +1,6 @@
 package com.training.restLibrary.service.impl;
 
+import com.training.restLibrary.exception.ResourceNotFoundException;
 import com.training.restLibrary.model.Account;
 import com.training.restLibrary.model.Role;
 import com.training.restLibrary.repository.AccountRepository;
@@ -12,6 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Interface implementation CRUD and simple logic operations on User
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -42,14 +49,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Account findByName(final String name) {
-        Account account = accountRepository.findByName(name).orElseThrow();
+        Account account = accountRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("not found user with username " + name));
         log.info("In findByName - user: {} found by name: {}", account, name);
         return account;
     }
 
     @Override
     public Account findById(final Long id) {
-        Account account = accountRepository.findById(id).orElseThrow();
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("not found user with id " + id));
         log.info("In findById - user: {} found by id: {}", account, id);
         return account;
     }

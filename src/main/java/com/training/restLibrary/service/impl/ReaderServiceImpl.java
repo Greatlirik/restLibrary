@@ -9,10 +9,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Reader service implementation
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -29,6 +35,7 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public Reader save(final Reader reader) {
+        reader.setRegistrationDate(LocalDate.now());
         readerRepository.save(reader);
         log.info("In save - reader with id: {} successfully saved", reader.getId());
         return reader;
@@ -36,6 +43,7 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public void deleteById(final Long id) {
+        readerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("not found reader with id " + id));
         readerRepository.deleteById(id);
         log.info("In delete - reader with id: {} successfully deleted", id);
     }
@@ -63,10 +71,11 @@ public class ReaderServiceImpl implements ReaderService {
                 .orElseThrow(() -> new ResourceNotFoundException("not found reader with id" + readerId));
         Set<Book> books = reader.getBooks();
         if (books.contains(book)) {
-            throw new ResourceNotFoundException("test");
+            throw new ResourceNotFoundException("you already have this book");
         }
         books.add(book);
         reader.setBooks(books);
+        readerRepository.save(reader);
         return book;
     }
 
@@ -76,10 +85,11 @@ public class ReaderServiceImpl implements ReaderService {
                 .orElseThrow(() -> new ResourceNotFoundException("not found reader with id" + readerId));
         Set<Book> books = reader.getBooks();
         if (!books.contains(book)) {
-            throw new ResourceNotFoundException("test");
+            throw new ResourceNotFoundException("you haven't this book");
         }
         books.remove(book);
         reader.setBooks(books);
+        readerRepository.save(reader);
         return reader;
     }
 }

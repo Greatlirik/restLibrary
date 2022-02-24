@@ -5,6 +5,8 @@ CREATE TABLE author (
     CONSTRAINT pk_author_id PRIMARY KEY (id)
 );
 
+CREATE SEQUENCE authors_id_seq START WITH 10 INCREMENT BY 1;
+
 CREATE TABLE account (
     id SERIAL,
     name VARCHAR(255) NOT NULL,
@@ -24,6 +26,8 @@ CREATE TABLE book (
     CONSTRAINT pk_book_id PRIMARY KEY (id)
 );
 
+CREATE SEQUENCE books_id_seq START WITH 10 INCREMENT BY 1;
+
 CREATE TABLE reader (
     id SERIAL,
     first_name VARCHAR(255) NOT NULL,
@@ -36,6 +40,8 @@ CREATE TABLE reader (
     CONSTRAINT pk_reader_id PRIMARY KEY (id)
 );
 
+CREATE SEQUENCE readers_id_seq START WITH 10 INCREMENT BY 1;
+
 CREATE TABLE record (
     id SERIAL,
     book_id INTEGER NOT NULL,
@@ -47,6 +53,8 @@ CREATE TABLE record (
     CONSTRAINT fk_record_reader_id FOREIGN KEY (reader_id) REFERENCES reader (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT pk_record_id PRIMARY KEY (id)
 );
+
+CREATE SEQUENCE records_id_seq START WITH 10 INCREMENT BY 1;
 
 CREATE TABLE role (
     id SERIAL,
@@ -71,15 +79,6 @@ CREATE TABLE account_role (
     CONSTRAINT pk_account_role_id PRIMARY KEY (id),
     CONSTRAINT fk_account_role_account_id FOREIGN KEY (account_id) REFERENCES account (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_account_role_role_id FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE account_book (
-    id SERIAL,
-    account_id INTEGER NOT NULL,
-    book_id INTEGER NOT NULL,
-    CONSTRAINT pk_account_book_id PRIMARY KEY (id),
-    CONSTRAINT fk_account_book_account_id FOREIGN KEY (account_id) REFERENCES account (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_account_book_book_id FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE reader_book (

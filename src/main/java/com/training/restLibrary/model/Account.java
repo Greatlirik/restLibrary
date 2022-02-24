@@ -8,30 +8,46 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * Account entity
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
 @Entity
 @Table(name = "account")
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Account extends BaseEntity{
+public class Account extends BaseEntity {
 
+    /**
+     * Field name
+     */
     @NotBlank
     @Column(name = "name", nullable = false)
     private String name;
 
+    /**
+     * Field password
+     */
     @NotBlank
     @Column(name = "password", nullable = false)
     private String password;
 
+    /**
+     * Field active
+     */
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Column(name = "active")
     private boolean active;
 
+    /**
+     * Field roles
+     */
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -43,13 +59,6 @@ public class Account extends BaseEntity{
     )
     @Column(name = "role_id", nullable = false)
     @Enumerated(EnumType.ORDINAL)
-    private List<Role> roles ;
+    private List<Role> roles;
 
-    @ToString.Exclude
-    @ManyToMany
-    @JoinTable(name = "account_book",
-            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id")
-    )
-    private Set<Book> books;
 }

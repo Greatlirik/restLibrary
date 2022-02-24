@@ -1,8 +1,20 @@
 package com.training.restLibrary.exception;
 
-public class ResourceNotFoundException extends RuntimeException{
+/**
+ * Custom ResourceNotFoundException
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
+public class ResourceNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
-    public ResourceNotFoundException(String msg) {
-        super(msg);
+
+    /**
+     * Constructor with parameter message
+     *
+     * @param message
+     */
+    public ResourceNotFoundException(String message) {
+        super(message);
     }
 }

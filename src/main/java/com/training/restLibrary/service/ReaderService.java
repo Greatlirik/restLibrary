@@ -5,6 +5,12 @@ import com.training.restLibrary.model.Reader;
 
 import java.util.List;
 
+/**
+ * CRUD and simple logic operations on Reader
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
 public interface ReaderService {
     List<Reader> findAll();
 

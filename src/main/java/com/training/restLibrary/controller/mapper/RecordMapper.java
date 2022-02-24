@@ -1,7 +1,7 @@
 package com.training.restLibrary.controller.mapper;
 
-import com.training.restLibrary.controller.dto.BookDto;
-import com.training.restLibrary.model.Book;
+import com.training.restLibrary.controller.dto.RecordDto;
+import com.training.restLibrary.model.Record;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,16 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @Component
-public class BookMapper {
+public class RecordMapper {
 
     /**
      * Autowired constructor field mapper
      */
     private final ModelMapper mapper;
+
+    public RecordMapper() {
+        this.mapper = new ModelMapper();
+    }
 
     /**
      * Change DTO to entity
@@ -29,8 +33,8 @@ public class BookMapper {
      * @param dto
      * @return entity
      */
-    public Book toEntity(BookDto dto) {
-        return Objects.isNull(dto) ? null : mapper.map(dto, Book.class);
+    public Record toEntity(RecordDto dto) {
+        return Objects.isNull(dto) ? null : mapper.map(dto, Record.class);
     }
 
     /**
@@ -39,7 +43,7 @@ public class BookMapper {
      * @param entity
      * @return dto
      */
-    public BookDto toDto(Book entity) {
-        return Objects.isNull(entity) ? null : mapper.map(entity, BookDto.class);
+    public RecordDto toDto(Record entity) {
+        return Objects.isNull(entity) ? null : mapper.map(entity, RecordDto.class);
     }
 }

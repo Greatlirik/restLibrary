@@ -7,8 +7,14 @@ import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
+/**
+ * CRUD and simple logic operations on Record
+ *
+ * @author Zhuk Kirill
+ * @version 1.0
+ */
 public interface RecordService {
-    Page<Record> findAll(Optional<Integer> page);
+    Page<Record> findAll(Optional<Integer> page, Long bookId, Long readerId);
 
     Record save(Record record);
 
@@ -17,10 +23,6 @@ public interface RecordService {
     Record findById(Long id);
 
     Record update(Record record, Long id);
-
-    Page<Record> findAllByReader(Long readerId, Optional<Integer> page);
-
-    Page<Record> findAllByBook(Long bookId, Optional<Integer> page);
 
     Record takeBook(Book book, Reader reader);
 

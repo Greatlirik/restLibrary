@@ -36,12 +36,12 @@ public class JwtTokenProvider {
         return bCryptPasswordEncoder;
     }
 
-    public String createToken(String name, List<Role> roles) {
-        Claims claims = Jwts.claims().setSubject(name);
+    public String createToken(final String name, final List<Role> roles) {
+        final Claims claims = Jwts.claims().setSubject(name);
         claims.put("roles", getRoleNames(roles));
 
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        final Date now = new Date();
+        final Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -51,26 +51,26 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(final String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUserName(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUserName(String token) {
+    public String getUserName(final String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+    public String resolveToken(final HttpServletRequest request) {
+        final String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
             return bearerToken.substring(7, bearerToken.length());
         }
         return null;
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(final String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            final Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
 
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
@@ -81,8 +81,8 @@ public class JwtTokenProvider {
         }
     }
 
-    private List<String> getRoleNames(List<Role> userRoles) {
-        List<String> result = new ArrayList<>();
+    private List<String> getRoleNames(final List<Role> userRoles) {
+        final List<String> result = new ArrayList<>();
         userRoles.forEach(role ->
                 result.add(role.getName()));
         return result;
